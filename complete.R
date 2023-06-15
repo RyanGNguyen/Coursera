@@ -8,7 +8,7 @@ complete <- function(directory, id = 1:332) {
         for(x in id) {
                 file <- fileNames[x]
                 table <- read.csv(file)
-                num <- sum(!is.na(table[2:3]))
+                num <- sum(!is.na(table$sulfate) & !is.na(table$nitrate))
                 idList <- c(idList, x)
                 nobs <- c(nobs, num)
         }
