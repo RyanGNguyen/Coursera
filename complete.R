@@ -7,9 +7,7 @@ complete <- function(directory, id = 1:332) {
         for(x in id) {
                 file <- fileNames[x]
                 table <- read.csv(file)
-                sulfates <- table["sulfate"]
-                nitrates <- table["nitrate"]
-                num <- length(sulfates[!is.na(sulfates)]) + length(nitrates[!is.na(nitrates)])
+                num <- sum(!is.na(table[1:2]))
                 files <- c(files, x)
                 nobs <- c(nobs, num)
         }
