@@ -3,15 +3,18 @@ complete <- function(directory, id = 1:332) {
         setwd(path)
         fileNames <- list.files(path)
         nobs <- c()
-        names <- c()
+        files <- c()
         for(x in id) {
                 file <- fileNames[x]
                 table <- read.csv(file)
-                pol <- table[pollutant]
-                names <- c(names, x)
-                nobs <- c(nobs, length(pol[!is.na(pol)]))
+                sulfates <- table["sulfate"]
+                nitrates <- table["nitrate"]
+                num <- length(sulfates[!is.na(sulfates)]) + length(nitrates[!is.na(nitrates)])
+                files <- c(files, x)
+                nobs <- c(nobs, num)
         }
-        df <- data.frame(nobs, row.names = names)
+        df <- data.frame(nobs, row.names = files)
+        names(df) <- c("id", "nobs")
         df
         
 }
