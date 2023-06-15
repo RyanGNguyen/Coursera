@@ -7,7 +7,7 @@ complete <- function(directory, id = 1:332) {
         for(x in id) {
                 file <- fileNames[x]
                 table <- read.csv(file)
-                num <- sum(!is.na(table[1:2]))
+                num <- sum(!is.na(table[2:3]))
                 files <- c(files, x)
                 nobs <- c(nobs, num)
         }
