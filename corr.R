@@ -5,9 +5,8 @@ corr <- function(directory, threshold = 0) {
         fileNames <- list.files(path)
         df <- complete(directory)
         corList <- c()
-        for (i in seq_along(df["id"])) {
-                obs <- df[i, "nobs"]
-                if (obs > threshold) {
+        for (i in as.vector(df$id)) {
+                if (df[i, "nobs"] > threshold) {
                         file <- fileNames[i]
                         table <- read.csv(file)
                         suf <- table[2]
