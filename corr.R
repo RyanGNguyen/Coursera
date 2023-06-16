@@ -6,7 +6,8 @@ corr <- function(directory, threshold = 0) {
         df <- complete(directory)
         corList <- c()
         for (id in df["id"]) {
-                if (df[id, 2] > threshold) {
+                obs <- df[id, "nobs"]
+                if (obs > threshold) {
                         file <- fileNames[id]
                         table <- read.csv(file)
                         suf <- table[2]
