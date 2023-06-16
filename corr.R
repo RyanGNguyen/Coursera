@@ -9,9 +9,9 @@ corr <- function(directory, threshold = 0) {
                 if (df[i, "nobs"] > threshold) {
                         file <- fileNames[i]
                         table <- read.csv(file)
-                        suf <- table[2]
-                        nit <- table[3]
-                        val <- cor(suf[!is.na(suf)], nit[!is.na(nit)])
+                        comCases <- table[!is.na(table$sulfate) & 
+                                                  !is.na(table$nitrate), 2:3]
+                        val <- cor(comCases[1], comCases[2])
                         corList <- c(corList, val)
                 }
         }
