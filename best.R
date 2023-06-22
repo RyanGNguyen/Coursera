@@ -30,6 +30,7 @@ best <- function(state, outcome) {
         bestRate <- min(rates, na.rm = T)
         
         ##Find hospital that corresponds to lowest mortality rate
-        bestIdx <- which(data$State == state & data[search_col] == bestRate)
+        bestIdx <- which(data$State == state & 
+                                 data[search_col] == as.character(bestRate))
         data[bestIdx, "Hospital.Name"]
 }
