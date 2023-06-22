@@ -6,12 +6,12 @@ best <- function(state, outcome) {
         
         ##Check if state is valid
         if (!(state %in% states)) {
-                print("invalid state")
+                stop("invalid state")
         }
         
         ##Check if outcome is valid
         if (!(outcome %in% outcomes)) {
-                print("invalid outcome")
+                stop("invalid outcome")
         }
         
         ##Finalize search range
@@ -24,8 +24,13 @@ best <- function(state, outcome) {
         }
         search_col <- paste("Hospital.30.Day.Death..Mortality..Rates.from", 
                              search_out, sep = ".") 
-        hospitals <- data[data$State == state, search_col]
         
-        ##Return hospital name in that state with lowest 30-day death rate
-        data[which(hospitals == min(hospitals)), "Hospital.Name"]
+        ##Find the lowest mortality rate 
+        rates <- as.numeric(data[data$State == state, search_col])
+        bestRate <- min(rates, na.rm = T)
+        
+        ##Find hospital that corresponds to lowest mortality rate
+        ##Correct index is 4103
+        bestIdx <- which(data$State == state & data[search_col] == bestRate)
+        data[bestIdx, "Hospital.Name"]
 }
