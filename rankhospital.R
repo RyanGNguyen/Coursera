@@ -26,19 +26,21 @@ rankhospital <- function(state, outcome, num = "best") {
                             search_out, sep = ".") 
         
         ##Find mortality rates
-        rates <- as.numeric(data[data$State == state, search_col])
+        rates <- na.omit(as.numeric(data[data$State == state, search_col]))
         
         #Pick mortality rate
-        if (num <= length(rates)) {
+        if (is.numeric(num)) {
+                if (num > length(rates)) {
+                        return(NA)
+                }
+        } else {
                 if (num == "best") {
                         num <- 1
                 } else if (num == "worst") {
                         num <- length(rates)
                 }
-        } else {
-                return(NA)
         }
-        numRate <- na.omit(rates)[num]
+        numRate <- rates[num]
         
         ##Find hospital that corresponds to numRate
         idx <- which(data$State == state & data[search_col] == format(numRate, nsmall = 1))
