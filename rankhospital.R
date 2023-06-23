@@ -1,4 +1,4 @@
-rankhospital <- function(state, outcome, num) {
+rankhospital <- function(state, outcome, num = "best") {
         ##Read outcome data 
         data <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
         outcomes <- c("heart attack", "heart failure", "pneumonia")
@@ -25,26 +25,22 @@ rankhospital <- function(state, outcome, num) {
         search_col <- paste("Hospital.30.Day.Death..Mortality..Rates.from", 
                             search_out, sep = ".") 
         
-        ##Find the lowest mortality rates
-        
+        ##Find mortality rates
         rates <- as.numeric(data[data$State == state, search_col])
-        rankings <- if (is.numeric(num)) {
-                if (num <= length(rates)) {
-                        order(rates, na.last = F)
-                } else {
-                        return(NA)
-                }
-        else {
-                if (identical(num, "best")) {
-                        rates[1]
-                } else {
-                        rates[length(rates)]
-                }
-                
-        }
         
-        ##Find hospital that corresponds to lowest mortality rate
-        ##bestIdx <- which(data$State == state & 
-                                 data[search_col] == as.character(bestRate))
-        ##data[bestIdx, "Hospital.Name"]
+        #Pick mortality rate
+        if (num <= length(rates)) {
+                if (num == "best") {
+                        num <- 1
+                } else if (num == "worst") {
+                        num <- length(rates)
+                }
+        } else {
+                return(NA)
+        }
+        numRate <- na.omit(rates)[num]
+        
+        ##Find hospital that corresponds to numRate
+        idx <- which(data$State == state & data[search_col] == format(numRate, nsmall = 1))
+        data[idx, "Hospital.Name"]
 }
