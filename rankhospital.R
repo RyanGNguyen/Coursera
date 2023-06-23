@@ -27,7 +27,7 @@ rankhospital <- function(state, outcome, num = "best") {
         
         ##Find mortality rates
         rates <- as.numeric(data[data$State == state, search_col])
-        ordered_rates <- order(rates, na.last = NA)
+        ordered_rates <- sapply(order(rates, na.last = NA), function(x) rates[x])
         
         #Pick mortality rate
         if (is.numeric(num)) {
